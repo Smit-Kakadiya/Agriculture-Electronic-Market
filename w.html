@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wheat</title>
+	  <!-- Import TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+  <!-- Import tfjs-vis -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+  <!-- Import the main script file -->
+</head>
+<body>
+	https://raw.githubusercontent.com/jemis67/Thorium/master/json.json
+  https://api.myjson.com/bins/b1mgx
+  https://api.myjson.com/bins/b1mgx
+
+	
+
+
+</script>
+<script type="text/javascript">
+
+const model = tf.sequential()
+model.add(tf.layers.dense({inputShape : [2], units :2,activation : 'softmax'}))
+model.add(tf.layers.dense({ units : 2, activation : 'relu'}))
+model.add(tf.layers.dense({ units : 1, useBias: true}))  
+
+const data = tf.tensor([[1993,2],[1993,3],[1993,4],[1993,5],[1993,6],[1993,7],[1993,8],[1993,9],[1993,10],[1993,11],[1993,12],[1994,2],[1994,3],[1994,4],[1994,5],[1994,6],[1994,7],[1994,8],[1994,9],[1994,10],[1994,11,],[1994,12],[1995,2],[1995,3],[1995,4],[1995,5],[1995,6],[1995,7],[1995,8],[1995,9],[1995,10],[1995,11],[1995,12],[1996,2],[1996,3],[1996,4],[1996,5],[1996,6],[1996,7],[1996,8],[1996,9],[1996,10],[1996,11],[1996,12]])
+
+const label = tf.tensor([[2.9],[2.57],[2.47],[2.63],[2.53],[2.48],[2.59],[2.47],[2.76],[2.77],[3.13],[3.02],[2.7],[3],[2.63],[2.94],[2.96],[3.39],[2.94],[3.11],[2.83],[3.42],[3.49],[3.43],[3.35],[2.41],[3.04],[2.94],[3.09],[3.3],[3.45],[3.39],[3.3],[3.44],[3.63],[3.27],[2.91],[3.62],[3.32],[4.3],[4.99],[5.18],[4.58],[4.61]])
+
+
+
+
+
+model.compile({
+    optimizer: tf.train.adam(),
+    loss:'meanSquaredError',
+    metrics:['mse']
+})
+function onBatchEnd (batch,logs){
+   // console.log(logs.acc)
+}
+model.fit(data, label, {
+epochs: 500,
+callbacks: tfvis.show.fitCallbacks(
+      { name: 'Training Performance' },
+      ['loss', 'mse'], 
+      { height: 200, callbacks: ['onEpochEnd'] }
+    )
+}).then(info =>{
+
+    console.log(info.history.acc);
+        model.save('localstorage://my-model');
+    console.log("Modle saved");
+   
+    var pred = model.predict(tf.tensor([[1997, 3]]));
+    var readable_output = pred.dataSync();
+    console.log(readable_output);
+
+})
+</script>
+</body>
+</html>
