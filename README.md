@@ -17,5 +17,6 @@
 - TensorFlow API
 - JavaScript
 - BootStrap
+- JSON
 - AJAX
 - MySQL
